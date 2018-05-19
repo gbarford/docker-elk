@@ -42,6 +42,27 @@ services:
     depends_on:
       - elasticsearch
 
+  redis:
+    build:
+      context: redis/
+    ports:
+      - "127.0.0.1:6379:6379"
+    networks:
+      - elk
+
+  correlate:
+    build:
+      context: correlate/
+    volumes:
+      - ../net2Host:/opt/net2Host/:ro
+    ports:
+            - "1514:1514"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+      - redis
+
 networks:
 
   elk:
