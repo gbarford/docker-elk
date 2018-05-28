@@ -50,13 +50,23 @@ services:
     networks:
       - elk
 
+  nxlog:
+    build:
+      context: nxlog/
+    ports:
+      - "1514:1514"
+    volumes:
+      - ../net2Host:/opt/net2Host-dev/:ro
+    networks:
+      - elk
+    depends_on:
+      - redis
+
   correlate:
     build:
       context: correlate/
     volumes:
-      - ../net2Host-dev:/opt/net2Host/:ro
-    ports:
-            - "1514:1514"
+      - ../net2Host:/opt/net2Host-dev/:ro
     networks:
       - elk
     depends_on:
