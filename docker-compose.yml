@@ -7,11 +7,12 @@ services:
       context: elasticsearch/
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+      - /opt/data/elasticNode0:/usr/share/elasticsearch/data/nodes
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ES_JAVA_OPTS: "-Xmx10g -Xms10g"
     networks:
       - elk
 
@@ -62,7 +63,18 @@ services:
     depends_on:
       - redis
 
-  correlate:
+  broLogRead:
+    build:
+      context: broLogRead/
+    volumes:
+      - ../net2Host:/opt/net2Host-dev/:ro
+      - /var/spool/bro/bro:/var/log/bro/current
+    networks:
+      - elk
+    depends_on:
+      - redis
+
+ correlate:
     build:
       context: correlate/
     volumes:
