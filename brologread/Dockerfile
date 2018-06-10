@@ -13,8 +13,8 @@ RUN apt-get install -y vim
 RUN apt-get install -y python3-elasticsearch
 RUN apt-get install -y git
 RUN apt-get install -y supervisor
-RUN cd /opt; git clone https://github.com/gbarford/net2Host.git
 RUN mkdir /var/log/net2Host
 RUN mkdir /var/lib/net2Host
+RUN cd /opt; git clone --branch alpha-rc https://github.com/gbarford/net2Host.git
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD ["/usr/bin/supervisord"]
