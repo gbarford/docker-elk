@@ -71,6 +71,7 @@ services:
       context: brologread/
     volumes:
       - /var/spool/bro/bro:/var/log/bro/current
+      #Alter above line to point at bro current folder
       #- ../net2Host:/opt/net2Host/:ro
       # Used for development overload git repo with host one for Dev
     networks:
