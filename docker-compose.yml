@@ -7,13 +7,13 @@ services:
       context: elasticsearch/
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
-      #- /opt/data/elasticNode0:/usr/share/elasticsearch/data/nodes
+      - /opt/data/elasticNode0:/usr/share/elasticsearch/data/nodes
       #Above used to store elastic data in persistant location
     ports:
       - "9200:9200"
       - "9300:9300"
     environment:
-      ES_JAVA_OPTS: "-Xmx1g -Xms1g"
+      ES_JAVA_OPTS: "-Xmx10g -Xms10g"
       # You may want increase above as 1G ram not much for elastic
     networks:
       - elk
@@ -58,8 +58,8 @@ services:
       context: nxlog/
     ports:
       - "1514:1514"
-    #volumes:
-    #  - ../net2Host:/opt/net2Host/:ro
+    volumes:
+      - ../net2Host:/opt/net2Host/:ro
     #  Used for development overload git repo with host one for Dev
     networks:
       - elk
@@ -70,9 +70,10 @@ services:
     build:
       context: brologread/
     volumes:
-      - /var/spool/bro/bro:/var/log/bro/current
+      - /var/log/bro:/var/log/bro
+      - /var/spool/bro:/var/spool/bro
       #Alter above line to point at bro current folder
-      #- ../net2Host:/opt/net2Host/:ro
+      - ../net2Host:/opt/net2Host/:ro
       # Used for development overload git repo with host one for Dev
     networks:
       - elk
@@ -82,8 +83,8 @@ services:
   correlate:
     build:
       context: correlate/
-    #volumes:
-    #  - ../net2Host:/opt/net2Host/:ro
+    volumes:
+      - ../net2Host:/opt/net2Host/:ro
     #  Used for development overload git repo with host one for Dev
     networks:
       - elk
